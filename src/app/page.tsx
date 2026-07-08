@@ -57,6 +57,9 @@ export default async function Home() {
         <div className="statusHeroInner">
           <p className="statusQuestion">{status.question}</p>
           <h1 className="statusAnswer">{status.label}</h1>
+          {status.status === "assume-no" ? (
+            <p className="statusExplanation">{status.message}</p>
+          ) : null}
         </div>
       </section>
 
