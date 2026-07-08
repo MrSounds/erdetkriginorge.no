@@ -1,4 +1,8 @@
-import { NODVARSEL_HOME_URL, NODVARSEL_RSS_INFO_URL } from "@/lib/sources";
+import {
+  NODVARSEL_ADVICE_URL,
+  NODVARSEL_HOME_URL,
+  NODVARSEL_RSS_INFO_URL,
+} from "@/lib/sources";
 import { getWarStatus, nodvarselCredit } from "@/lib/status";
 
 export const dynamic = "force-dynamic";
@@ -61,6 +65,15 @@ export default async function Home() {
           <h1 className="statusAnswer">{status.label}</h1>
           {showStatusExplanation ? (
             <p className="statusExplanation">{status.message}</p>
+          ) : null}
+          {status.status === "yes" ? (
+            <p className="statusAdvice">
+              Følg rådene i aktivt Nødvarsel.{" "}
+              <a href={NODVARSEL_ADVICE_URL}>
+                Les hva rådene fra Nødvarsel betyr
+              </a>
+              .
+            </p>
           ) : null}
         </div>
       </section>

@@ -63,6 +63,10 @@ describe("Home page", () => {
       "Aktivt Nødvarsel tolkes som krig, væpnet angrep eller tilsvarende alvorlig militær hendelse.",
     );
     expect(html).toContain('class="statusExplanation"');
+    expect(html).toContain("Følg rådene i aktivt Nødvarsel");
+    expect(html).toContain(
+      'href="https://www.nodvarsel.no/hva-betyr-radene/"',
+    );
   });
 
   it("does not show a status explanation for regular NEI", async () => {
@@ -78,5 +82,6 @@ describe("Home page", () => {
 
     expect(html).toContain("NEI");
     expect(html).not.toContain('class="statusExplanation"');
+    expect(html).not.toContain("Følg rådene i aktivt Nødvarsel");
   });
 });

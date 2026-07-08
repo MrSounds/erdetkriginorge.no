@@ -89,6 +89,19 @@ a:hover {
   line-height: 1.35;
 }
 
+.statusAdvice {
+  max-width: 760px;
+  margin: 18px auto 0;
+  color: var(--foreground);
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.statusAdvice a {
+  color: var(--danger);
+}
+
 .faqSection {
   min-height: 100vh;
   min-height: 100svh;
