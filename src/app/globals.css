@@ -131,6 +131,48 @@ h2 {
   letter-spacing: 0;
 }
 
+.exerciseNotice {
+  margin-top: 28px;
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--unknown);
+  border-radius: 8px;
+  padding: 18px 20px;
+  background: #fffaf0;
+}
+
+.exerciseNoticeLabel {
+  margin: 0 0 8px;
+  color: var(--unknown);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.exerciseNotice h3 {
+  margin: 0 0 10px;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  line-height: 1.2;
+}
+
+.exerciseNotice ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.exerciseNotice li {
+  margin: 0 0 8px;
+  color: var(--foreground);
+  line-height: 1.45;
+}
+
+.exerciseNotice p:last-child {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
 .faqList {
   margin-top: 34px;
   border-top: 1px solid var(--line);

@@ -1,6 +1,11 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
+import type { MilitaryExerciseNotice } from "@/lib/military-exercises";
 import type { WarStatusResult } from "@/lib/status";
+
+vi.mock("@/lib/military-exercises", () => ({
+  getMilitaryExerciseNotices: vi.fn(async () => []),
+}));
 
 vi.mock("@/lib/status", () => ({
   nodvarselCredit: {
@@ -9,6 +14,7 @@ vi.mock("@/lib/status", () => ({
   getWarStatus: vi.fn(),
 }));
 
+const { getMilitaryExerciseNotices } = await import("@/lib/military-exercises");
 const { getWarStatus } = await import("@/lib/status");
 const { default: Home } = await import("@/app/page");
 
@@ -83,5 +89,33 @@ describe("Home page", () => {
     expect(html).toContain("NEI");
     expect(html).not.toContain('class="statusExplanation"');
     expect(html).not.toContain("Følg rådene i aktivt Nødvarsel");
+  });
+
+  it("shows military exercise notices separately from war status", async () => {
+    const notice: MilitaryExerciseNotice = {
+      title: "Testøvelse 2026",
+      url: "https://www.forsvaret.no/ovelser/test",
+      summary: "Forsvaret gjennomfører øvelse.",
+      location: "Nord-Norge",
+      dateText: "8.–19. juli 2026.",
+      sourceName: "Forsvaret",
+      sourceUrl:
+        "https://www.forsvaret.no/om-forsvaret/operasjoner-og-ovelser/ovelser",
+    };
+
+    vi.mocked(getWarStatus).mockResolvedValueOnce({
+      ...baseStatus,
+      status: "no",
+      label: "NEI",
+      message:
+        "Ingen aktive Nødvarsler er tolket som krig eller væpnet angrep mot Norge.",
+    });
+    vi.mocked(getMilitaryExerciseNotices).mockResolvedValueOnce([notice]);
+
+    const html = renderToStaticMarkup(await Home());
+
+    expect(html).toContain("Forsvaret melder om pågående øvelse");
+    expect(html).toContain("Testøvelse 2026");
+    expect(html).toContain("Det påvirker ikke JA/NEI-statusen over.");
   });
 });

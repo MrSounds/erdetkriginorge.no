@@ -1,16 +1,21 @@
 import {
   FORSVARET_ACTIVITY_CALENDAR_URL,
+  FORSVARET_EXERCISES_URL,
   FORSVARET_OPERATIONS_EXERCISES_URL,
   NODVARSEL_ADVICE_URL,
   NODVARSEL_HOME_URL,
   NODVARSEL_RSS_INFO_URL,
 } from "@/lib/sources";
+import { getMilitaryExerciseNotices } from "@/lib/military-exercises";
 import { getWarStatus, nodvarselCredit } from "@/lib/status";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const status = await getWarStatus();
+  const [status, militaryExerciseNotices] = await Promise.all([
+    getWarStatus(),
+    getMilitaryExerciseNotices(),
+  ]);
   const showStatusExplanation =
     status.status === "yes" || status.status === "assume-no";
   const faqItems = [
@@ -69,9 +74,11 @@ export default async function Home() {
       answer:
         "Se Forsvarets sider om operasjoner og øvelser: " +
         FORSVARET_OPERATIONS_EXERCISES_URL +
+        ", Forsvarets øvelsesoversikt: " +
+        FORSVARET_EXERCISES_URL +
         " og Forsvarets aktivitetskalender: " +
         FORSVARET_ACTIVITY_CALENDAR_URL +
-        ". Lokale kommuner, politiet, Statens vegvesen og Forsvarsbygg kan også publisere informasjon når øvelser påvirker trafikk, støy, skytefelt eller ferdsel.",
+        ". Siden forsøker også å vise pågående øvelser fra Forsvarets øvelsessider når sted og dato kan tolkes tydelig, men manglende øvelsesboks betyr ikke at det ikke finnes militær aktivitet. Lokale kommuner, politiet, Statens vegvesen og Forsvarsbygg kan også publisere informasjon når øvelser påvirker trafikk, støy, skytefelt eller ferdsel.",
     },
     {
       question: "Hvor ofte oppdateres statusen?",
@@ -124,6 +131,25 @@ export default async function Home() {
         <div className="faqInner">
           <p className="sectionKicker">FAQ</p>
           <h2 id="faq-title">Spørsmål og svar</h2>
+          {militaryExerciseNotices.length > 0 ? (
+            <aside className="exerciseNotice" aria-label="Militær øvelse">
+              <p className="exerciseNoticeLabel">Militær aktivitet</p>
+              <h3>Forsvaret melder om pågående øvelse</h3>
+              <ul>
+                {militaryExerciseNotices.map((notice) => (
+                  <li key={notice.url}>
+                    <a href={notice.url}>{notice.title}</a>
+                    {notice.location ? `: ${notice.location}` : null}
+                    {notice.dateText ? ` (${notice.dateText})` : null}
+                  </li>
+                ))}
+              </ul>
+              <p>
+                Dette er bare kontekst om mulig militær aktivitet. Det påvirker
+                ikke JA/NEI-statusen over.
+              </p>
+            </aside>
+          ) : null}
           <div className="faqList">
             {faqItems.map((item) => (
               <article className="faqItem" key={item.question}>

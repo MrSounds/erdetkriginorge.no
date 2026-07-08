@@ -11,5 +11,8 @@ export const NODVARSEL_ADVICE_URL =
 export const FORSVARET_OPERATIONS_EXERCISES_URL =
   "https://www.forsvaret.no/om-forsvaret/operasjoner-og-ovelser";
 
+export const FORSVARET_EXERCISES_URL =
+  "https://www.forsvaret.no/om-forsvaret/operasjoner-og-ovelser/ovelser";
+
 export const FORSVARET_ACTIVITY_CALENDAR_URL =
   "https://www.forsvaret.no/aktuelt-og-presse/kalender";
