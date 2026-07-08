@@ -18,14 +18,9 @@ export default async function Home() {
             : `Siden viser NEI. ${status.message}`,
     },
     {
-      question: "Hva betyr Anta NEI?",
-      answer:
-        "Anta NEI vises hvis siden ikke får hentet eller lest kilden. Det betyr at siden mangler kontakt med pålitelige kilder, ikke at myndighetene har bekreftet situasjonen.",
-    },
-    {
       question: "Er dette en offisiell nettside?",
       answer:
-        "Nei. erdetkriginorge.no er en enkel og uavhengig statusvisning. Ved krise skal du følge råd fra politiet, Sivilforsvaret, DSB, regjeringen og andre myndigheter.",
+        "Nei. erdetkriginorge.no er en uavhengig statusvisning som henter informasjon fra offentlige og pålitelige kilder omtrent hvert minutt. Siden er ment som en enkel oversikt, ikke som en erstatning for råd og varsler direkte fra politiet, Sivilforsvaret, DSB, regjeringen eller andre myndigheter.",
     },
     {
       question: "Betyr NEI at alt er trygt?",
@@ -38,6 +33,11 @@ export default async function Home() {
         "Statusen hentes server-side og caches kort, omtrent ett minutt. Siste sjekk for denne visningen var " +
         formatDateTime(status.checkedAt) +
         ".",
+    },
+    {
+      question: "Hva betyr Anta NEI?",
+      answer:
+        "Anta NEI vises hvis siden midlertidig ikke får hentet eller lest kilden. Da viser siden et konservativt fallback-svar mens den venter på kontakt med pålitelige kilder.",
     },
   ];
   const faqJsonLd = {
