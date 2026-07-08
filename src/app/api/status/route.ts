@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getWarStatus } from "@/lib/status";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const status = await getWarStatus();

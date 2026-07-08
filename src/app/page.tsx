@@ -1,7 +1,7 @@
 import { NODVARSEL_HOME_URL, NODVARSEL_RSS_INFO_URL } from "@/lib/sources";
 import { getWarStatus, nodvarselCredit } from "@/lib/status";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const status = await getWarStatus();
@@ -13,7 +13,7 @@ export default async function Home() {
           ? "Siden viser JA fordi et aktivt Nødvarsel er tolket som krig, væpnet angrep eller tilsvarende alvorlig militær hendelse mot Norge. Følg alltid råd direkte fra myndighetene."
           : status.status === "assume-no"
             ? "Siden viser Anta NEI fordi den ikke får kontakt med Nødvarsel akkurat nå. Det er ikke en bekreftelse fra myndighetene, men en fallback mens siden venter på kontakt fra pålitelige kilder."
-            : "Siden viser NEI fordi den fikk kontakt med Nødvarsel og ikke fant aktive varsler som tolkes som krig eller væpnet angrep mot Norge.",
+            : `Siden viser NEI. ${status.message}`,
     },
     {
       question: "Hva betyr Anta NEI?",
