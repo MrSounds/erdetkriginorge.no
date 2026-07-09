@@ -11,11 +11,19 @@ function erdet_config(): array
     }
 
     $root = dirname(__DIR__);
-    $privateConfigPath = erdet_env('ERDET_CONFIG_PATH', $root . '/../private/erdetkriginorge/config.php');
+    $explicitConfigPath = erdet_env('ERDET_CONFIG_PATH');
+    $domainPrivateConfigPath = $root . '/../private/erdetkriginorge/config.php';
+    $accountPrivateConfigPath = dirname(dirname(dirname($root))) . '/private/erdetkriginorge/config.php';
     $localConfigPath = $root . '/config.local.php';
     $fileConfig = [];
+    $configPaths = array_filter([
+        $explicitConfigPath,
+        $domainPrivateConfigPath,
+        $accountPrivateConfigPath,
+        $localConfigPath,
+    ]);
 
-    foreach ([$privateConfigPath, $localConfigPath] as $path) {
+    foreach (array_unique($configPaths) as $path) {
         if ($path && is_file($path)) {
             $loaded = require $path;
             if (is_array($loaded)) {
@@ -54,4 +62,3 @@ function erdet_config(): array
 
     return $config;
 }
-

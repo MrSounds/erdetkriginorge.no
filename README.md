@@ -42,7 +42,7 @@ php -S localhost:8000
 Produksjon på Hostinger bør bruke privat config utenfor `public_html`, for eksempel:
 
 ```text
-../private/erdetkriginorge/config.php
+/home/u786208640/private/erdetkriginorge/config.php
 ```
 
 Bruk `config.example.php` som mal. Den faktiske config-filen skal ikke committes.
