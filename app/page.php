@@ -62,7 +62,7 @@ function erdet_faq_items(array $status): array
         ],
         [
             'question' => 'Hva betyr Anta NEI?',
-            'answer' => 'Anta NEI vises hvis siden midlertidig ikke får hentet eller lest kilden, eller hvis systemet er usikkert etter en AI-vurdering. Ved usikkerhet sendes vurderingen til menneskelig kontroll.',
+            'answer' => 'Anta NEI vises hvis siden midlertidig ikke får hentet status fra RSS, eller hvis systemet er usikkert etter en KI-vurdering. Ved usikkerhet sendes vurderingen til menneskelig kontroll.',
         ],
     ];
 }
