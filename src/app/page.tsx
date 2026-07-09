@@ -87,7 +87,7 @@ export default async function Home() {
     {
       question: "Hvor ofte oppdateres statusen?",
       answer:
-        "Statusen hentes server-side og caches kort, omtrent ett minutt. Siste sjekk for denne visningen var " +
+        "Status hentes omtrent hvert eneste minutt. Siste sjekk for denne visningen var " +
         formatDateTime(status.checkedAt) +
         ".",
     },
