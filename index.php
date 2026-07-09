@@ -79,7 +79,7 @@ $description = 'En enkel norsk statusside som svarer ja eller nei på om det er 
           <?php foreach ($faqItems as $item): ?>
             <article class="faqItem">
               <h3><?= erdet_html($item['question']) ?></h3>
-              <p><?= erdet_html($item['answer']) ?></p>
+              <p><?= $item['answerHtml'] ?? erdet_html($item['answer']) ?></p>
             </article>
           <?php endforeach; ?>
         </div>
@@ -92,5 +92,45 @@ $description = 'En enkel norsk statusside som svarer ja eller nei på om det er 
       og <a href="<?= erdet_html(ERDET_NODVARSEL_RSS_INFO_URL) ?>">RSS-informasjonen</a>.
     </footer>
   </main>
+  <script>
+    (() => {
+      const checkedAtElement = document.querySelector("[data-checked-at]");
+
+      if (!checkedAtElement) {
+        return;
+      }
+
+      const checkedAt = new Date(checkedAtElement.dataset.checkedAt);
+
+      if (Number.isNaN(checkedAt.getTime())) {
+        return;
+      }
+
+      const absoluteText = checkedAtElement.textContent || "";
+
+      const formatRelative = () => {
+        const seconds = Math.max(0, Math.round((Date.now() - checkedAt.getTime()) / 1000));
+
+        if (seconds < 60) {
+          return `for ${seconds} sekunder siden`;
+        }
+
+        const minutes = Math.round(seconds / 60);
+
+        if (minutes === 1) {
+          return "for 1 minutt siden";
+        }
+
+        return `for ${minutes} minutter siden`;
+      };
+
+      const updateCheckedAt = () => {
+        checkedAtElement.textContent = `${absoluteText} (${formatRelative()})`;
+      };
+
+      updateCheckedAt();
+      window.setInterval(updateCheckedAt, 15000);
+    })();
+  </script>
 </body>
 </html>

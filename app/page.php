@@ -56,6 +56,7 @@ function erdet_faq_items(array $status): array
         [
             'question' => 'Hvor ofte oppdateres statusen?',
             'answer' => 'Statusen hentes server-side og caches kort, omtrent ett minutt. Siste sjekk for denne visningen var ' . erdet_format_date_time((string) $status['checkedAt']) . '.',
+            'answerHtml' => 'Statusen hentes server-side og caches kort, omtrent ett minutt. Siste sjekk for denne visningen var <span data-checked-at="' . erdet_html((string) $status['checkedAt']) . '">' . erdet_html(erdet_format_date_time((string) $status['checkedAt'])) . '</span>.',
         ],
         [
             'question' => 'Hva betyr Anta NEI?',
