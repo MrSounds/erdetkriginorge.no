@@ -23,7 +23,7 @@ function erdet_faq_items(array $status): array
         ],
         [
             'question' => 'Hvor hentes statusen fra?',
-            'answer' => 'Statusen hentes fra aktive Nødvarsler fra Nødvarsel.no. Siden leser den offentlige RSS-feeden jevnlig og bruker bare aktive varsler som grunnlag for statusen.',
+            'answer' => 'Statusen hentes fra aktive Nødvarsler fra nodvarsel.no. Siden leser den offentlige RSS-feeden jevnlig og bruker bare aktive varsler som grunnlag for statusen.',
         ],
         [
             'question' => 'Hva skal til for at siden viser JA?',

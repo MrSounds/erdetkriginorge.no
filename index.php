@@ -87,11 +87,10 @@ $description = 'En enkel norsk statusside som svarer ja eller nei på om det er 
     </section>
 
     <footer class="sourceCredit">
-      Data om aktive nødvarsler kommer fra Nødvarsel.no.
-      Se <a href="<?= erdet_html(ERDET_NODVARSEL_HOME_URL) ?>">Nødvarsel.no</a>
+      Data om aktive nødvarsler kommer fra nodvarsel.no.
+      Se <a href="<?= erdet_html(ERDET_NODVARSEL_HOME_URL) ?>">nodvarsel.no</a>
       og <a href="<?= erdet_html(ERDET_NODVARSEL_RSS_INFO_URL) ?>">RSS-informasjonen</a>.
     </footer>
   </main>
 </body>
 </html>
-

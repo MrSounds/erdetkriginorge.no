@@ -311,7 +311,7 @@ function toText(value: unknown): string {
 }
 
 export const nodvarselCredit = {
-  text: "Data om aktive nødvarsler kommer fra Nødvarsel.no.",
+  text: "Data om aktive nødvarsler kommer fra nodvarsel.no.",
   homeUrl: NODVARSEL_HOME_URL,
   rssInfoUrl: NODVARSEL_RSS_INFO_URL,
 };

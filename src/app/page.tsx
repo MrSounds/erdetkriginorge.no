@@ -39,7 +39,7 @@ export default async function Home() {
     {
       question: "Hvor hentes statusen fra?",
       answer:
-        "Statusen hentes fra aktive Nødvarsler fra Nødvarsel.no. Siden leser den offentlige RSS-feeden jevnlig og bruker bare aktive varsler som grunnlag for statusen.",
+        "Statusen hentes fra aktive Nødvarsler fra nodvarsel.no. Siden leser den offentlige RSS-feeden jevnlig og bruker bare aktive varsler som grunnlag for statusen.",
     },
     {
       question: "Hva skal til for at siden viser JA?",
@@ -165,7 +165,7 @@ export default async function Home() {
       </section>
 
       <footer className="sourceCredit">
-        {nodvarselCredit.text} Se <a href={NODVARSEL_HOME_URL}>Nødvarsel.no</a>{" "}
+        {nodvarselCredit.text} Se <a href={NODVARSEL_HOME_URL}>nodvarsel.no</a>{" "}
         og <a href={NODVARSEL_RSS_INFO_URL}>RSS-informasjonen</a>.
       </footer>
 

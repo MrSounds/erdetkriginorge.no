@@ -9,7 +9,7 @@ vi.mock("@/lib/military-exercises", () => ({
 
 vi.mock("@/lib/status", () => ({
   nodvarselCredit: {
-    text: "Data om aktive nødvarsler kommer fra Nødvarsel.no.",
+    text: "Data om aktive nødvarsler kommer fra nodvarsel.no.",
   },
   getWarStatus: vi.fn(),
 }));
