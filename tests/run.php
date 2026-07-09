@@ -28,6 +28,8 @@ $review = erdet_enforce_conservative_review([
     'reason' => 'Mulig alvorlig varsel.',
 ], '2026-07-08T10:00:00+00:00', 'test-model');
 assert_true($review['classification'] === 'uncertain', 'confirmed_yes uten high confidence nedgraderes');
+assert_true(erdet_has_uncertain_review([$review]), 'Uncertain AI-review oppdages');
+assert_true(!erdet_has_uncertain_review([['classification' => 'no']]), 'No AI-review er ikke uncertain');
 
 $detailHtml = '<html><head><meta property="og:title" content="Øvelse Test"><meta name="description" content="Forsvaret øver."></head><body><ul><li><strong>Hvor</strong> Troms</li><li><strong>Når</strong> 1. juli til 31. juli 2026</li></ul></body></html>';
 $notice = erdet_parse_forsvaret_exercise_detail($detailHtml, ['title' => 'Fallback', 'url' => 'https://www.forsvaret.no/test'], new DateTimeImmutable('2026-07-09', new DateTimeZone('Europe/Oslo')));

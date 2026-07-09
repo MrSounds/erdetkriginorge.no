@@ -152,6 +152,24 @@ async function computeWarStatus(
       };
     }
 
+    if (hasUncertainReview(aiReviews)) {
+      return {
+        status: "assume-no",
+        label: "Anta NEI",
+        tone: "unknown",
+        question: "Er det krig i Norge nå?",
+        message:
+          "Systemet er usikkert. Det er for øyeblikket sendt en vurdering til menneskelig kontroll.",
+        checkedAt,
+        source: buildSource("ok"),
+        activeAlerts,
+        triggeredAlerts,
+        matchedAlerts,
+        aiReviews,
+        notifications,
+      };
+    }
+
     return {
       status: "no",
       label: "NEI",
@@ -192,6 +210,10 @@ function usesDefaultRuntimeOptions(options: GetWarStatusOptions): boolean {
     !options.classifier &&
     !options.notifier
   );
+}
+
+export function hasUncertainReview(aiReviews: AlertReview[]): boolean {
+  return aiReviews.some((review) => review.classification === "uncertain");
 }
 
 export function parseNodvarselRss(xml: string): NodvarselAlert[] {

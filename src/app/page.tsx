@@ -26,9 +26,11 @@ export default async function Home() {
       answer:
         status.status === "yes"
           ? "Siden viser JA fordi et aktivt Nødvarsel er tolket som krig, væpnet angrep eller tilsvarende alvorlig militær hendelse mot Norge. Følg alltid råd direkte fra myndighetene."
-          : status.status === "assume-no"
+          : status.status === "assume-no" && status.source.state === "error"
             ? "Siden viser Anta NEI fordi den ikke får kontakt med Nødvarsel akkurat nå. Det er ikke en bekreftelse fra myndighetene, men en fallback mens siden venter på kontakt fra pålitelige kilder."
-            : `NEI. ${status.message} Du kan trygt slappe av.`,
+            : status.status === "assume-no"
+              ? "Siden viser Anta NEI fordi systemet er usikkert. Det er for øyeblikket sendt en vurdering til menneskelig kontroll, og siden viser ikke JA før det er sikkert."
+              : `NEI. ${status.message} Du kan trygt slappe av.`,
     },
     {
       question: "Hva gjør man om JA?",
@@ -49,7 +51,7 @@ export default async function Home() {
     {
       question: "Hva skjer hvis systemet er usikkert?",
       answer:
-        "Ved usikkerhet viser siden ikke JA automatisk. Usikre vurderinger varsles for manuell kontroll, og siden holder seg konservativ for å unngå falsk alarm.",
+        "Ved usikkerhet viser siden Anta NEI, ikke JA. Det er for øyeblikket sendt en vurdering til menneskelig kontroll, og siden holder seg konservativ for å unngå falsk alarm.",
     },
     {
       question: "Er dette en offisiell nettside?",
@@ -92,7 +94,7 @@ export default async function Home() {
     {
       question: "Hva betyr Anta NEI?",
       answer:
-        "Anta NEI vises hvis siden midlertidig ikke får hentet eller lest kilden. Da viser siden et konservativt fallback-svar mens den venter på kontakt med pålitelige kilder.",
+        "Anta NEI vises hvis siden midlertidig ikke får hentet eller lest kilden, eller hvis systemet er usikkert etter en AI-vurdering. Ved usikkerhet sendes vurderingen til menneskelig kontroll.",
     },
   ];
   const faqJsonLd = {

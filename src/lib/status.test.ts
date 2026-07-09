@@ -53,7 +53,7 @@ describe("Nødvarsel status", () => {
     expect(result.aiReviews).toHaveLength(0);
   });
 
-  it("does not return JA for war wording unless AI confirms it", async () => {
+  it("does not return JA for war wording when AI rejects it", async () => {
     const rss = `<?xml version="1.0" encoding="utf-8"?>
       <rss><channel><item>
         <title>Nødvarsel: Væpnet angrep mot Norge</title>
@@ -65,7 +65,7 @@ describe("Nødvarsel status", () => {
     const result = await getWarStatus({
       now,
       fetcher: async () => response(rss),
-      classifier: async () => review("uncertain"),
+      classifier: async () => review("no"),
       notifier: async () => notification("sent"),
     });
 
@@ -74,8 +74,8 @@ describe("Nødvarsel status", () => {
     expect(result.triggeredAlerts).toHaveLength(1);
     expect(result.matchedAlerts).toHaveLength(0);
     expect(result.aiReviews).toHaveLength(1);
-    expect(result.aiReviews[0].classification).toBe("uncertain");
-    expect(result.notifications).toHaveLength(1);
+    expect(result.aiReviews[0].classification).toBe("no");
+    expect(result.notifications).toHaveLength(0);
   });
 
   it("returns JA and sends notification when AI confirms war in Norway", async () => {
@@ -120,7 +120,7 @@ describe("Nødvarsel status", () => {
     expect(result.matchedAlerts).toHaveLength(0);
   });
 
-  it("keeps NEI when trigger words exist but OpenAI is not configured", async () => {
+  it("returns Anta NEI when trigger words exist but AI is uncertain", async () => {
     const rss = `<?xml version="1.0" encoding="utf-8"?>
       <rss><channel><item>
         <title>Nødvarsel: Invasjon omtales i beredskapsråd</title>
@@ -133,7 +133,12 @@ describe("Nødvarsel status", () => {
       notifier: async () => notification("skipped"),
     });
 
-    expect(result.status).toBe("no");
+    expect(result.status).toBe("assume-no");
+    expect(result.label).toBe("Anta NEI");
+    expect(result.message).toBe(
+      "Systemet er usikkert. Det er for øyeblikket sendt en vurdering til menneskelig kontroll.",
+    );
+    expect(result.source.state).toBe("ok");
     expect(result.triggeredAlerts).toHaveLength(1);
     expect(result.matchedAlerts).toHaveLength(0);
     expect(result.aiReviews[0].classification).toBe("uncertain");

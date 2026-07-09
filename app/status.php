@@ -59,6 +59,23 @@ function erdet_compute_war_status(): array
             ];
         }
 
+        if (erdet_has_uncertain_review($aiReviews)) {
+            return [
+                'status' => 'assume-no',
+                'label' => 'Anta NEI',
+                'tone' => 'unknown',
+                'question' => 'Er det krig i Norge nå?',
+                'message' => 'Systemet er usikkert. Det er for øyeblikket sendt en vurdering til menneskelig kontroll.',
+                'checkedAt' => $checkedAt,
+                'source' => erdet_build_source('ok'),
+                'activeAlerts' => $activeAlerts,
+                'triggeredAlerts' => $triggeredAlerts,
+                'matchedAlerts' => $matchedAlerts,
+                'aiReviews' => $aiReviews,
+                'notifications' => $notifications,
+            ];
+        }
+
         return [
             'status' => 'no',
             'label' => 'NEI',
@@ -89,6 +106,17 @@ function erdet_compute_war_status(): array
             'notifications' => [],
         ];
     }
+}
+
+function erdet_has_uncertain_review(array $aiReviews): bool
+{
+    foreach ($aiReviews as $review) {
+        if (($review['classification'] ?? '') === 'uncertain') {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function erdet_parse_nodvarsel_rss(string $xml): array

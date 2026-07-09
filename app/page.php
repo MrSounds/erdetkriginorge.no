@@ -6,8 +6,10 @@ function erdet_faq_items(array $status): array
 {
     if ($status['status'] === 'yes') {
         $firstAnswer = 'Siden viser JA fordi et aktivt Nødvarsel er tolket som krig, væpnet angrep eller tilsvarende alvorlig militær hendelse mot Norge. Følg alltid råd direkte fra myndighetene.';
-    } elseif ($status['status'] === 'assume-no') {
+    } elseif ($status['status'] === 'assume-no' && ($status['source']['state'] ?? '') === 'error') {
         $firstAnswer = 'Siden viser Anta NEI fordi den ikke får kontakt med Nødvarsel akkurat nå. Det er ikke en bekreftelse fra myndighetene, men en fallback mens siden venter på kontakt fra pålitelige kilder.';
+    } elseif ($status['status'] === 'assume-no') {
+        $firstAnswer = 'Siden viser Anta NEI fordi systemet er usikkert. Det er for øyeblikket sendt en vurdering til menneskelig kontroll, og siden viser ikke JA før det er sikkert.';
     } else {
         $firstAnswer = 'NEI. ' . $status['message'] . ' Du kan trygt slappe av.';
     }
@@ -31,7 +33,7 @@ function erdet_faq_items(array $status): array
         ],
         [
             'question' => 'Hva skjer hvis systemet er usikkert?',
-            'answer' => 'Ved usikkerhet viser siden ikke JA automatisk. Usikre vurderinger varsles for manuell kontroll, og siden holder seg konservativ for å unngå falsk alarm.',
+            'answer' => 'Ved usikkerhet viser siden Anta NEI, ikke JA. Det er for øyeblikket sendt en vurdering til menneskelig kontroll, og siden holder seg konservativ for å unngå falsk alarm.',
         ],
         [
             'question' => 'Er dette en offisiell nettside?',
@@ -60,7 +62,7 @@ function erdet_faq_items(array $status): array
         ],
         [
             'question' => 'Hva betyr Anta NEI?',
-            'answer' => 'Anta NEI vises hvis siden midlertidig ikke får hentet eller lest kilden. Da viser siden et konservativt fallback-svar mens den venter på kontakt med pålitelige kilder.',
+            'answer' => 'Anta NEI vises hvis siden midlertidig ikke får hentet eller lest kilden, eller hvis systemet er usikkert etter en AI-vurdering. Ved usikkerhet sendes vurderingen til menneskelig kontroll.',
         ],
     ];
 }
