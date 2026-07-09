@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 function erdet_faq_items(array $status): array
 {
-    $firstAnswer = match ($status['status']) {
-        'yes' => 'Siden viser JA fordi et aktivt Nødvarsel er tolket som krig, væpnet angrep eller tilsvarende alvorlig militær hendelse mot Norge. Følg alltid råd direkte fra myndighetene.',
-        'assume-no' => 'Siden viser Anta NEI fordi den ikke får kontakt med Nødvarsel akkurat nå. Det er ikke en bekreftelse fra myndighetene, men en fallback mens siden venter på kontakt fra pålitelige kilder.',
-        default => 'NEI. ' . $status['message'] . ' Du kan trygt slappe av.',
-    };
+    if ($status['status'] === 'yes') {
+        $firstAnswer = 'Siden viser JA fordi et aktivt Nødvarsel er tolket som krig, væpnet angrep eller tilsvarende alvorlig militær hendelse mot Norge. Følg alltid råd direkte fra myndighetene.';
+    } elseif ($status['status'] === 'assume-no') {
+        $firstAnswer = 'Siden viser Anta NEI fordi den ikke får kontakt med Nødvarsel akkurat nå. Det er ikke en bekreftelse fra myndighetene, men en fallback mens siden venter på kontakt fra pålitelige kilder.';
+    } else {
+        $firstAnswer = 'NEI. ' . $status['message'] . ' Du kan trygt slappe av.';
+    }
 
     return [
         [
@@ -67,14 +69,15 @@ function erdet_faq_json_ld(array $faqItems): array
     return [
         '@context' => 'https://schema.org',
         '@type' => 'FAQPage',
-        'mainEntity' => array_map(static fn (array $item): array => [
+        'mainEntity' => array_map(static function (array $item): array {
+            return [
             '@type' => 'Question',
             'name' => $item['question'],
             'acceptedAnswer' => [
                 '@type' => 'Answer',
                 'text' => $item['answer'],
             ],
-        ], $faqItems),
+            ];
+        }, $faqItems),
     ];
 }
-

@@ -61,7 +61,7 @@ function erdet_write_cache(string $name, array $data): void
     rename($tmp, $path);
 }
 
-function erdet_with_file_lock(string $name, callable $callback): mixed
+function erdet_with_file_lock(string $name, callable $callback)
 {
     $path = erdet_storage_file($name);
     $handle = fopen($path, 'c+');
@@ -79,4 +79,3 @@ function erdet_with_file_lock(string $name, callable $callback): mixed
         fclose($handle);
     }
 }
-

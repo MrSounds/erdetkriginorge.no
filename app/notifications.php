@@ -184,7 +184,9 @@ function erdet_notification_text_body(array $alert, array $review): string
         'Beskrivelse: ' . ($alert['description'] ?: '(tom)'),
         'Lenke: ' . ($alert['link'] ?: '(tom)'),
         'Publisert: ' . ($alert['publishedAt'] ?: '(ukjent)'),
-    ], static fn (string $line): bool => $line !== ''));
+    ], static function (string $line): bool {
+        return $line !== '';
+    }));
 }
 
 function erdet_notification_html_body(array $alert, array $review): string
@@ -259,4 +261,3 @@ function erdet_mark_notification_sent(string $key): void
         fwrite($handle, json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) ?: '{}');
     });
 }
-

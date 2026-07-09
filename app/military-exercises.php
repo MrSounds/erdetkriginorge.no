@@ -151,7 +151,7 @@ function erdet_extract_meta_content(string $html, string $nameOrProperty): ?stri
 function erdet_exercise_is_explicitly_over(string $text): bool
 {
     foreach (['øvelsen er over', 'øvelsen er avsluttet', 'øvelsen ble avsluttet', 'ble avsluttet'] as $phrase) {
-        if (str_contains($text, $phrase)) {
+        if (erdet_contains($text, $phrase)) {
             return true;
         }
     }
@@ -248,7 +248,7 @@ function erdet_absolute_forsvaret_url(string $href): ?string
         return null;
     }
 
-    if (str_starts_with($href, '/')) {
+    if (erdet_starts_with($href, '/')) {
         return ERDET_FORSVARET_BASE_URL . $href;
     }
 

@@ -23,7 +23,7 @@ function erdet_env(string $key, ?string $default = null): ?string
     return $value;
 }
 
-function erdet_bool(mixed $value, bool $default = false): bool
+function erdet_bool($value, bool $default = false): bool
 {
     if (is_bool($value)) {
         return $value;
@@ -36,7 +36,7 @@ function erdet_bool(mixed $value, bool $default = false): bool
     return in_array(strtolower((string) $value), ['1', 'true', 'yes', 'ja'], true);
 }
 
-function erdet_int(mixed $value, int $default): int
+function erdet_int($value, int $default): int
 {
     if (is_int($value)) {
         return $value;
@@ -54,7 +54,7 @@ function erdet_html(string $value): string
     return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-function erdet_text(mixed $value): string
+function erdet_text($value): string
 {
     if ($value === null) {
         return '';
@@ -82,6 +82,16 @@ function erdet_substr(string $value, int $start, int $length): string
     return function_exists('mb_substr')
         ? mb_substr($value, $start, $length, 'UTF-8')
         : substr($value, $start, $length);
+}
+
+function erdet_starts_with(string $value, string $prefix): bool
+{
+    return substr($value, 0, strlen($prefix)) === $prefix;
+}
+
+function erdet_contains(string $value, string $needle): bool
+{
+    return $needle === '' || strpos($value, $needle) !== false;
 }
 
 function erdet_strip_html(string $html): string
@@ -115,7 +125,7 @@ function erdet_format_date_time(string $isoDate): string
     }
 }
 
-function erdet_json_response(array $data, int $status = 200): never
+function erdet_json_response(array $data, int $status = 200): void
 {
     http_response_code($status);
     header('Content-Type: application/json; charset=utf-8');
