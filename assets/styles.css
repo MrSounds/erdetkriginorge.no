@@ -206,6 +206,36 @@ h2 {
   line-height: 1.55;
 }
 
+.inlineRefreshButton {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  margin-left: 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 4px 10px;
+  background: #fffaf0;
+  color: var(--foreground);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.92em;
+  font-weight: 800;
+}
+
+.inlineRefreshButton:hover {
+  border-color: var(--muted);
+}
+
+.inlineRefreshButton:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.refreshStatus {
+  display: inline-block;
+  margin-left: 8px;
+}
+
 .sourceCredit {
   border-top: 1px solid var(--line);
   padding: 14px 18px;
@@ -231,4 +261,3 @@ h2 {
     padding-top: 56px;
   }
 }
-

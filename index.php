@@ -95,22 +95,24 @@ $description = 'En enkel norsk statusside som svarer ja eller nei på om det er 
   <script>
     (() => {
       const checkedAtElement = document.querySelector("[data-checked-at]");
+      const refreshButton = document.querySelector("[data-refresh-status]");
+      const refreshMessage = document.querySelector("[data-refresh-message]");
 
       if (!checkedAtElement) {
         return;
       }
 
-      const checkedAt = new Date(checkedAtElement.dataset.checkedAt);
+      const initialStatusLabel = checkedAtElement.dataset.statusLabel || "";
 
-      if (Number.isNaN(checkedAt.getTime())) {
-        return;
-      }
+      const formatDateTime = (date) =>
+        new Intl.DateTimeFormat("nb-NO", {
+          dateStyle: "short",
+          timeStyle: "short",
+          timeZone: "Europe/Oslo",
+        }).format(date);
 
-      const absoluteText = checkedAtElement.textContent || "";
-
-      const formatRelative = () => {
-        const seconds = Math.max(0, Math.round((Date.now() - checkedAt.getTime()) / 1000));
-
+      const formatRelative = (date) => {
+        const seconds = Math.max(0, Math.round((Date.now() - date.getTime()) / 1000));
         if (seconds < 60) {
           return `for ${seconds} sekunder siden`;
         }
@@ -124,12 +126,76 @@ $description = 'En enkel norsk statusside som svarer ja eller nei på om det er 
         return `for ${minutes} minutter siden`;
       };
 
-      const updateCheckedAt = () => {
-        checkedAtElement.textContent = `${absoluteText} (${formatRelative()})`;
+      const renderCheckedAt = (isoDate) => {
+        const checkedAt = new Date(isoDate);
+
+        if (Number.isNaN(checkedAt.getTime())) {
+          return;
+        }
+
+        checkedAtElement.dataset.checkedAt = isoDate;
+        checkedAtElement.textContent = `${formatDateTime(checkedAt)} (${formatRelative(checkedAt)})`;
       };
 
-      updateCheckedAt();
-      window.setInterval(updateCheckedAt, 15000);
+      const setRefreshMessage = (message) => {
+        if (refreshMessage) {
+          refreshMessage.textContent = message;
+        }
+      };
+
+      const refreshStatus = async (manual = false) => {
+        if (refreshButton) {
+          refreshButton.disabled = true;
+        }
+
+        if (manual) {
+          setRefreshMessage("Sjekker...");
+        }
+
+        try {
+          const response = await fetch("/api/status", {
+            cache: "no-store",
+            headers: {
+              Accept: "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Status kunne ikke hentes");
+          }
+
+          const status = await response.json();
+
+          if (status.label && status.label !== initialStatusLabel) {
+            window.location.reload();
+            return;
+          }
+
+          if (typeof status.checkedAt === "string") {
+            renderCheckedAt(status.checkedAt);
+          }
+
+          if (manual) {
+            setRefreshMessage("Oppdatert.");
+          }
+        } catch {
+          if (manual) {
+            setRefreshMessage("Kunne ikke oppdatere akkurat nå.");
+          }
+        } finally {
+          if (refreshButton) {
+            refreshButton.disabled = false;
+          }
+        }
+      };
+
+      renderCheckedAt(checkedAtElement.dataset.checkedAt || "");
+      window.setInterval(() => renderCheckedAt(checkedAtElement.dataset.checkedAt || ""), 15000);
+      window.setInterval(() => refreshStatus(false), 60000);
+
+      if (refreshButton) {
+        refreshButton.addEventListener("click", () => refreshStatus(true));
+      }
     })();
   </script>
 </body>
